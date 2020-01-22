@@ -46,7 +46,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "moviesADLS",
+						"referenceName": "inputdata",
 						"type": "DatasetReference"
 					}
 				]
