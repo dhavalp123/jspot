@@ -16,9 +16,15 @@
 			"transformations": [
 				{
 					"name": "renamecolumn"
+				},
+				{
+					"name": "removeoldfilms"
+				},
+				{
+					"name": "CalculatePrimaryGenre"
 				}
 			],
-			"script": "\n\nsource(output(\n\t\tColumn_1 as string,\n\t\tColumn_2 as string,\n\t\tColumn_3 as string,\n\t\tColumn_4 as string,\n\t\tColumn_5 as string,\n\t\tColumn_6 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> moviesADLSinput\nmoviesADLSinput select(mapColumn(\n\t\t{Movie Name} = Column_1,\n\t\ttitle = Column_2,\n\t\tgenre = Column_3,\n\t\tyear = Column_4,\n\t\t{rotten tomatoes} = Column_6\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> renamecolumn"
+			"script": "\n\nsource(output(\n\t\tColumn_1 as string,\n\t\tColumn_2 as string,\n\t\tColumn_3 as string,\n\t\tColumn_4 as string,\n\t\tColumn_5 as string,\n\t\tColumn_6 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> moviesADLSinput\nmoviesADLSinput select(mapColumn(\n\t\t{Movie Name} = Column_1,\n\t\ttitle = Column_2,\n\t\tgenre = Column_3,\n\t\tyear = Column_4,\n\t\t{rotten tomatoes} = Column_6\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> renamecolumn\nrenamecolumn filter(toInteger(year) > 1950) ~> removeoldfilms\nremoveoldfilms derive(Primarygenre = iif(locate('|',genre)>1, left(genre, locate('|',genre)-1), genre)) ~> CalculatePrimaryGenre"
 		}
 	}
 }
