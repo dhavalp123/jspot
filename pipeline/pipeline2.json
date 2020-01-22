@@ -46,14 +46,8 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "inputdata",
-						"type": "DatasetReference",
-						"parameters": {
-							"filename": {
-								"value": "@pipeline().parameters.filename",
-								"type": "Expression"
-							}
-						}
+						"referenceName": "moviesADLS",
+						"type": "DatasetReference"
 					}
 				]
 			}
